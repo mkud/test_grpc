@@ -6,4 +6,5 @@ metadata:
 data:
   PORT_EXTERNAL: "80"
   PORT_GRPC: "50002"
-  HOST_GRPC: "grpc_server1"
+  HOST_GRPC: "grpcservice"
+  CSV_PATH: "/data/meterusage.csv"

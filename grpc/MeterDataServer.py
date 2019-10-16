@@ -14,8 +14,8 @@ import GetMeterData_pb2_grpc
 import csv
 import os
 from time import sleep
-port_external = os.environ['PORT_EXTERNAL'] #50002
-csv_path = os.environ['CSV_PATH'] #'../meterusage.csv'
+port_external = os.environ['PORT_GRPC'] #50002
+csv_path = os.environ['CSV_PATH'] #'/data/meterusage.csv'
 
 class GetMeterData(GetMeterData_pb2_grpc.GetMeterDataServicer):
 

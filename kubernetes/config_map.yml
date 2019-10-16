@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grpctest-config
+  namespace: default
+data:
+  PORT_EXTERNAL: "80"
+  PORT_GRPC: "50002"
+  HOST_GRPC: "grpc_server1"

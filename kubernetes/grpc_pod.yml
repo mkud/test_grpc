@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grpcserver
+spec:
+  hostname: grpc_server1
+  containers:
+  - name: grpcserver
+    image: mkud/grpc_grpctest:latest
+    volumeMounts:
+    - mountPath: /data
+      name: datameters
+  volumes:
+  - name: datameters
+    emptyDir: {}

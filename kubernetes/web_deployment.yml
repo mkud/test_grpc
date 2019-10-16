@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testgrpc-deployment
+  labels:
+    app: webserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: webserver
+        image: mkud/web_grpctest:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT_EXTERNAL
+          valueFrom:
+            configMapKeyRef:
+              name: grpctest-config
+              key: PORT_EXTERNAL
+        - name: PORT_GRPC
+          valueFrom:
+            configMapKeyRef:
+              name: grpctest-config
+              key: PORT_GRPC
+        - name: HOST_GRPC
+          valueFrom:
+            configMapKeyRef:
+              name: grpctest-config
+              key: HOST_GRPC

@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+package testgRPC;
+
+service GetMeterData {
+  // Get Meter Data
+  rpc GetData (DataRequest) returns (MeterDataResponse) {}
+}
+
+// The request message containing the user's name.
+message DataRequest {
+  int64 fromDateTime = 1;
+  int64 toDateTime = 2;
+}
+
+message MeterDataResponse {
+    repeated OneMeterData items = 1;
+}
+
+// The response message containing the greetings
+message OneMeterData {
+  double actEnIN = 1;
+  double reactEnIN = 2;
+  double actEnOUT = 3;
+  double reactEnOUT = 4;
+  int64 datetime = 5;
+}

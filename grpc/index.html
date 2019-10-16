@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+table, th, td {
+	border: 1px solid black;
+}
+
+a:visited {
+	color: blue;
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>test gRPC</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	function AskAvailable() {
+		$('#btn_ask').button('option', 'disabled', true);
+		$.ajax({
+			type : 'POST',
+			url : 'get_data',
+			data : {
+				'dtFrom' : $('#dtFrom').datepicker("getDate").getTime()
+						- new Date().getTimezoneOffset() * 60 * 1000,
+				'dtTo' : $('#dtTo').datepicker("getDate").getTime()
+						- new Date().getTimezoneOffset() * 60 * 1000
+			},
+			success : function(data) {
+				var table = $('<table></table>');
+				var trh = $('<tr>');
+				$.each(
+						[ "Active Energy IN", "Reactive Energy IN",
+								"Active Energy OUT", "Reactive Energy OUT",
+								"Date/Time" ], function(i, item) {
+							trh.append($('<th>').text(item));
+						});
+				table.append(trh);
+
+				$.each(data, function(i, item) {
+					var tr = $('<tr>').append($('<td>').text(item.actEnIN),
+							$('<td>').text(item.reactEnIN),
+							$('<td>').text(item.actEnOUT),
+							$('<td>').text(item.reactEnOUT),
+							$('<td>').text(new Date(item.datetime).toUTCString()));
+					table.append(tr);
+				});
+				$('#result').append(table);
+			},
+			error : function() {
+				$('#result').html("Error while data return");
+			},
+			complete : function() {
+				$('#btn_ask').button('option', 'disabled', false);
+			}
+		});
+	}
+
+	function CheckBtn() {
+		$("#btn_ask").button('option', 'disabled',
+				($('#dtFrom').val().length * $('#dtTo').val().length) == 0);
+	}
+
+	$(document).ready(function() {
+		$("#dtFrom").datepicker({
+			minDate : new Date(2019, 8 - 1, 1),
+			maxDate : new Date(2019, 8 - 1, 31)
+		});
+		$("#dtTo").datepicker({
+			minDate : new Date(2019, 8 - 1, 1),
+			maxDate : new Date(2019, 8 - 1, 31)
+		});
+		$("#btn_ask").button({
+			disabled : true
+		});
+	});
+</script>
+</head>
+<body>
+
+	<div id="content" class="container">
+		<h3 class="ui-widget">Enter date range(date available 08/01/2019 - 08/31/2019 inclusive) (GMT)</h3>
+		<p>
+			<label for="dtFrom" class="ui-widget">Date from</label> <input type="text"
+				class="form-control ui-widget ui-widget-content ui-corner-all" id="dtFrom" onChange="CheckBtn();">
+		</p>
+		<p>
+			<label for="dtTo" class="ui-widget">Date to</label> <input type="text"
+				class="form-control ui-widget ui-widget-content ui-corner-all" id="dtTo" onChange="CheckBtn();">
+		</p>
+
+		<button class="ui-button ui-widget ui-corner-all" onClick="AskAvailable()" id="btn_ask">Get data from gRPC</button>
+		<br> <label for="result" class="ui-widget">Results</label>
+	</div>
+	<div id="result" class="container"></div>
+</body>
+</html>

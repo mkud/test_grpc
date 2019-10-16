@@ -1,0 +1,14 @@
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: testgrpc-ingress
+spec:
+  rules:
+  - host: testgrpc.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: testgrpc
+          servicePort: 80

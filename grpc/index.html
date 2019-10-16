@@ -47,7 +47,7 @@ a:visited {
 							$('<td>').text(new Date(item.datetime).toUTCString()));
 					table.append(tr);
 				});
-				$('#result').append(table);
+				$('#result').html(table);
 			},
 			error : function() {
 				$('#result').html("Error while data return");

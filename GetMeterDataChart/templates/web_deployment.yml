@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testgrpc-deployment
+  labels:
+    app: webserver
+spec:
+  replicas: {{ .Values.webserver.replicaCount }}
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: webserver
+        image: "{{ .Values.webserver.repository }}:{{ .Values.webserver.tag }}"
+        imagePullPolicy: {{ .Values.webserver.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.PORT_EXTERNAL }}
+        env:
+        - name: PORT_EXTERNAL
+          value: "{{ .Values.PORT_EXTERNAL }}"
+        - name: PORT_GRPC
+          value: "{{ .Values.PORT_GRPC }}"
+        - name: HOST_GRPC
+          value: "{{ .Values.HOST_GRPC }}"

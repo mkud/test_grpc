@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grpcserver
+  labels:
+    app: grpcserver
+spec:
+  containers:
+  - name: grpcserver
+    image: "{{ .Values.grpcserver.repository }}:{{ .Values.grpcserver.tag }}"
+    volumeMounts:
+    - mountPath: /data
+      name: datameters
+    env:
+    - name: PORT_GRPC
+      value: "{{ .Values.PORT_GRPC }}"
+    - name: CSV_PATH
+      value: "{{ .Values.CSV_PATH }}"
+  initContainers:
+  - name: config-data
+    image: busybox
+    command: ["wget","{{ .Values.grpcserver.link_with_data }}","-P","/data"]
+    volumeMounts:
+    - name: datameters
+      mountPath: /data
+  volumes:
+  - name: datameters
+    emptyDir: {}
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpcservice
+spec:
+  selector:
+    app: grpcserver
+  ports:
+  - name: grpc
+    protocol: TCP
+    port: {{ .Values.PORT_GRPC }}
+    targetPort: {{ .Values.PORT_GRPC }}
+

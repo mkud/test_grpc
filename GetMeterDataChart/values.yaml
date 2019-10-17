@@ -2,52 +2,30 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+#GLOBAL DATA
 
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+PORT_EXTERNAL: "80"
+PORT_GRPC: "50002"
+HOST_GRPC: "grpcservice"
+CSV_PATH: "/data/meterusage.csv"
+DATA_DOWNLOAD: ""
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+webserver:
+  replicaCount: 3
+  repository: mkud/web_grpctest
+  tag: latest
+  pullPolicy: Always
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name:
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
+grpcserver:
+  repository: mkud/grpc_grpctest
+  tag: latest
+  link_with_data: https://raw.githubusercontent.com/mkud/test_grpc/master/meter_data/meterusage.csv
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
   hosts:
-    - host: chart-example.local
-      paths: []
-
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+    - host: testgrpc.local
+      paths: [/]
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

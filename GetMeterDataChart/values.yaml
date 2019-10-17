@@ -2,28 +2,40 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-#GLOBAL DATA
+#global settings section
 
+#port number used for external interface
 PORT_EXTERNAL: "80"
+#port number used for GRPC connection. Not important. Can be any
 PORT_GRPC: "50002"
+#service name used for GRPC connection. Not important. Can be any
 HOST_GRPC: "grpcservice"
+#where to store csv data with heat meter data to gRPC server
 CSV_PATH: "/data/meterusage.csv"
-DATA_DOWNLOAD: ""
 
+#this is specail section for webserver part
 webserver:
+#There are 3 webservers for working with http queries
   replicaCount: 3
+#For kubernetes I use my own image from Docker HUB
   repository: mkud/web_grpctest
   tag: latest
+#pull policy settings. Don't know why this is settings)
   pullPolicy: Always
 
+#this is specail section for gRPC server part
 grpcserver:
+#For kubernetes I use my own image from Docker HUB
   repository: mkud/grpc_grpctest
   tag: latest
+#gRPC server image download csv file from here (before it starts)
   link_with_data: https://raw.githubusercontent.com/mkud/test_grpc/master/meter_data/meterusage.csv
 
+#ingress section
 ingress:
   enabled: true
   hosts:
+    # to connect web interface use this server name (http://testgrpc.local/) (echo "$(minikube ip) testgrpc.local" | sudo tee -a /etc/hosts)
     - host: testgrpc.local
       paths: [/]
 

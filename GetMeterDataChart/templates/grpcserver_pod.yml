@@ -31,7 +31,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: grpcservice
+  name: "{{ .Values.HOST_GRPC }}"
 spec:
   selector:
     app: grpcserver

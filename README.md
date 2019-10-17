@@ -1,4 +1,4 @@
-# new_grpc
+# test_grpc project
 
 * GetMeterDataChart - this is directory for Helm Chart
 * docker - this is directiry with 2 docker files: webserver and gRPC server

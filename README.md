@@ -9,7 +9,7 @@
 
 # Pure docker scripts:
 
-* 1_create_grpc_interface.sh - this script generate python classes from gRPC proto description
+* 1_create_grpc_interface.sh - this script generate python classes from gRPC proto description (no need to run it - the generated files are already in the repository)
 * 2_make_pure_dockerS.sh - generate 2 docker images (webserver and gRPC server) from 2 docker files
 * 3_start_grpc_pure_docker.sh - run gRPC server process in pure docker
 * 4_start_web_pure_docker.sh - run web server process in pure docker

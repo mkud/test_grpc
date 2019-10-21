@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: grpcserver
+  name: grpcserver1
   labels:
-    app: grpcserver
+    app: grpcserver1
 spec:
   containers:
-  - name: grpcserver
+  - name: grpcserver1
     image: mkud/grpc_grpctest:latest
     volumeMounts:
     - mountPath: /data
@@ -25,10 +25,21 @@ spec:
   initContainers:
   - name: config-data
     image: busybox
-    command: ["wget","https://raw.githubusercontent.com/mkud/test_grpc/master/meter_data/meterusage.csv","-P","/data"]
+    command: ["wget","$(ADDRESS_DATA)","-O","$(TO_DATA)"]
     volumeMounts:
     - name: datameters
       mountPath: /data
+    env:
+    - name: ADDRESS_DATA
+      valueFrom:
+        configMapKeyRef:
+          name: grpctest-config
+          key: GRPC1_ADDRESS
+    - name: TO_DATA
+      valueFrom:
+        configMapKeyRef:
+          name: grpctest-config
+          key: CSV_PATH
   volumes:
   - name: datameters
     emptyDir: {}
@@ -37,10 +48,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: grpcservice
+  name: grpcservice1
 spec:
   selector:
-    app: grpcserver
+    app: grpcserver1
+  clusterIP: None
   ports:
   - name: grpc
     protocol: TCP

@@ -6,5 +6,6 @@ metadata:
 data:
   PORT_EXTERNAL: "80"
   PORT_GRPC: "50002"
-  HOST_GRPC: "grpcservice"
+  HOST_GRPC: "grpcservice1"
   CSV_PATH: "/data/meterusage.csv"
+  GRPC1_ADDRESS: "https://raw.githubusercontent.com/mkud/test_grpc/master/meter_data/meterusage.csv"

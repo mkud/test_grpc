@@ -32,21 +32,31 @@ class GetMeterData(GetMeterData_pb2_grpc.GetMeterDataServicer):
                     cur.actEnOUT = float(row[2])
                     cur.reactEnOUT = float(row[3])
                     cur.datetime = int(row[4])
-        
         return ret
 
+import signal
+import sys
+server = None
+need_exit = False
+
+def sigterm_handler(_signo, _stack_frame):
+    if server is not None:
+        server.stop(0)
+    global need_exit
+    need_exit = True
+
+signal.signal(signal.SIGTERM, sigterm_handler)
+signal.signal(signal.SIGINT, sigterm_handler)
 
 def serve():
-    print (123)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     GetMeterData_pb2_grpc.add_GetMeterDataServicer_to_server(GetMeterData(), server)
     server.add_insecure_port('0.0.0.0:' + port_external)
-    print(321)
     server.start()
     print('0.0.0.0:' + port_external)
     #server.wait_for_termination() #experimental IP
     try:
-        while True:
+        while not need_exit:
             sleep(1)
     except KeyboardInterrupt:
         server.stop(0)

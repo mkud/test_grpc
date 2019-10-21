@@ -15,7 +15,7 @@
 * 4_start_web_pure_docker.sh - run web server process in pure docker
 * 5_STOP_grpc_pure_docker.sh - stop gRPC server. now there are some problems in it - it doesn’t exit by CTRL+C.
 
-# Kubernetes script
+# Kubernetes script(not need to run Pure docker scripts)
 
 * 6_kubernetes.sh - start kubernetes from ./kubernetes/*.YAML
 * 7_kubernetes_stop.sh - stop all kubernetes from privious step

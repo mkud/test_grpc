@@ -9,7 +9,7 @@ PORT_EXTERNAL: "80"
 #port number used for GRPC connection. Not important. Can be any
 PORT_GRPC: "50002"
 #service name used for GRPC connection. Not important. Can be any
-HOST_GRPC: "grpcservice"
+HOST_GRPC: "grpcservice1"
 #where to store csv data with heat meter data to gRPC server
 CSV_PATH: "/data/meterusage.csv"
 
